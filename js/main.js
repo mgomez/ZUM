@@ -9,7 +9,7 @@ $(()=>{
 		let code = QRCode();
 		//let code = "42120600";
 		$.ajax({
-			url: `http://api.walmartlabs.com/v1/items/${code}?format=json&apiKey=${apiKey}&lsPublisherId=0`,
+			url: `http://api.walmartlabs.com/v1/items?format=json&apiKey=${apiKey}&upc=${code}`,
 			type: 'GET',
 			contentType: "application/json; charset=utf-8",
 			dataType: 'jsonp',
