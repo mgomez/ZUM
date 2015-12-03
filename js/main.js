@@ -37,9 +37,13 @@ function call(number){
 	})
 	.done(function(r) {
 		console.log("success", r);
-		Productos.push(r);
-		localStorage.Productos = JSON.stringify(Productos);
-		ProductInfo();
+		if(!r.errors){
+			Productos.push(r);
+			localStorage.Productos = JSON.stringify(Productos);
+			ProductInfo();			
+		}else{
+			alert("ERROR", r.errors[0].message);
+		}
 	})
 	.fail(function(err) {
 		console.error("error", err);
