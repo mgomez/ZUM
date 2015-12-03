@@ -6,24 +6,7 @@ $(()=>{
 	ProductInfo();
 	$("#scann").on("click", (e)=>{
 		//abrir scanner...
-		let code = QRCode();
-		$.ajax({
-			url: `http://www.walmart.com/product/mobile/api/upc/${code}`,
-			type: 'GET',
-			contentType: "application/json; charset=utf-8",
-			dataType: 'jsonp',
-			data: {},
-			crossDomain: true,
-		})
-		.done(function(r) {
-			console.log("success", r);
-			Productos.push(r);
-            localStorage.Productos = JSON.stringify(Productos);
-            ProductInfo();
-		})
-		.fail(function(err) {
-			console.error("error", err);
-		});
+		let code = QRCode();		
 	})
 });
 function ProductInfo(){
@@ -39,7 +22,23 @@ function QRCode(){
         scanner.scan( function (result) {        
             if(!result.cancelled){
                 alert("CODE: " + result.text);                
-                return result.text;
+                $.ajax({
+					url: `http://www.walmart.com/product/mobile/api/upc/${code}`,
+					type: 'GET',
+					contentType: "application/json; charset=utf-8",
+					dataType: 'jsonp',
+					data: {},
+					crossDomain: true,
+				})
+				.done(function(r) {
+					console.log("success", r);
+					Productos.push(r);
+		            localStorage.Productos = JSON.stringify(Productos);
+		            ProductInfo();
+				})
+				.fail(function(err) {
+					console.error("error", err);
+				});
             } 
         }, function (error) { 
             console.log("Scanning failed: ", error); 
