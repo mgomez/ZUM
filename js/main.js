@@ -21,9 +21,8 @@ function QRCode(){
         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
         scanner.scan( function (result) {        
             if(!result.cancelled){
-                alert("CODE: " + result.text);                
                 $.ajax({
-					url: `http://www.walmart.com/product/mobile/api/upc/${code}`,
+					url: `http://www.walmart.com/product/mobile/api/upc/${result.text}`,
 					type: 'GET',
 					contentType: "application/json; charset=utf-8",
 					dataType: 'jsonp',
