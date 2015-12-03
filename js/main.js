@@ -1,18 +1,17 @@
 "use strict";
 const apiKey = "mwteuqmdy4crfdvmswvzwkpf";
-const Productos = (localStorage.Productos === undefined) ? [] : JSON.parse(localStorage.Productos);
+var Productos = (localStorage.Productos === undefined) ? [] : JSON.parse(localStorage.Productos);
 var Total = 0;
 $(()=>{
 	ProductInfo();
 	$("#scann").on("click", (e)=>{
-		//abrir scanner...
 		let code = QRCode();		
-	})
+	});
 });
 function ProductInfo(){
 	let rows = [];
 	$.Enumerable.From(Productos).ForEach(m=>{
-		rows.push($("<li>",{class:"collection-item", html:`<h3>${m.name}</h3><p>$${m.salePrice}</p><img src="${m.thumbnailImage}">`}));
+		rows.push($("<li>",{class:"collection-item", html:`<h3>${m.items[0].name}</h3><p>$${m.items[0].salePrice}</p><img src="${m.items[0].thumbnailImage}">`}));
 		Total += Number(m.salePrice);
 	});
 	$("#Productos").html(rows);
@@ -21,28 +20,31 @@ function QRCode(){
         var scanner = cordova.require("cordova/plugin/BarcodeScanner");
         scanner.scan( function (result) {        
             if(!result.cancelled){
-                $.ajax({
-					url: `http://www.walmart.com/product/mobile/api/upc/${result.text}`,
-					type: 'GET',
-					contentType: "application/json; charset=utf-8",
-					dataType: 'jsonp',
-					data: {},
-					crossDomain: true,
-				})
-				.done(function(r) {
-					console.log("success", r);
-					Productos.push(r);
-		            localStorage.Productos = JSON.stringify(Productos);
-		            ProductInfo();
-				})
-				.fail(function(err) {
-					console.error("error", err);
-				});
+                call(result.text);
             } 
         }, function (error) { 
             console.log("Scanning failed: ", error); 
         } );
     }
+function call(number){
+	$.ajax({
+		url: `http://api.walmartlabs.com/v1/items?apiKey=${apiKey}&upc=${number}`,
+		type: 'GET',
+		contentType: "application/json; charset=utf-8",
+		dataType: 'jsonp',
+		data: {},
+		crossDomain: true,
+	})
+	.done(function(r) {
+		console.log("success", r);
+		Productos.push(r);
+		localStorage.Productos = JSON.stringify(Productos);
+		ProductInfo();
+	})
+	.fail(function(err) {
+		console.error("error", err);
+	});
+}  
 //****************************************************************//
 $.fn.serializeObject = function()
 {
