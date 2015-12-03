@@ -1,15 +1,14 @@
 "use strict";
 const apiKey = "mwteuqmdy4crfdvmswvzwkpf";
 const Productos = (localStorage.Productos === undefined) ? [] : JSON.parse(localStorage.Productos);
-const Total = 0;
+var Total = 0;
 $(()=>{
 	ProductInfo();
 	$("#scann").on("click", (e)=>{
 		//abrir scanner...
 		let code = QRCode();
-		//let code = "42120600";
 		$.ajax({
-			url: `http://api.walmartlabs.com/v1/items?format=json&apiKey=${apiKey}&upc=${code}`,
+			url: `http://www.walmart.com/product/mobile/api/upc/${code}`,
 			type: 'GET',
 			contentType: "application/json; charset=utf-8",
 			dataType: 'jsonp',
@@ -31,6 +30,7 @@ function ProductInfo(){
 	let rows = [];
 	$.Enumerable.From(Productos).ForEach(m=>{
 		rows.push($("<li>",{class:"collection-item", html:`<h3>${m.name}</h3><p>$${m.salePrice}</p><img src="${m.thumbnailImage}">`}));
+		Total += Number(m.salePrice);
 	});
 	$("#Productos").html(rows);
 }
