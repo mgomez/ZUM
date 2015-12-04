@@ -41,9 +41,9 @@ function call (number) {
         .done(function(r) {
             console.log("success", r);
             if (!r.errors) {
-                //Productos.push(r);
-                //localStorage.Productos = JSON.stringify(Productos);
-                //ProductInfo();
+                Productos.push(r);
+                localStorage.Productos = JSON.stringify(Productos);
+                ProductInfo();
             } else {
                 alert("ERROR", r);
             }
