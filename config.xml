@@ -2,7 +2,7 @@
 <widget xmlns= "http://www.w3.org/ns/widgets"
         xmlns:gap= "http://phonegap.com/ns/1.0"
         id= "com.cgomez.zum"
-        version= "0.2.0">
+        version= "0.3.0">
 
     <name>ZUM</name>
     <description>ZUM APP</description>
@@ -29,4 +29,5 @@
         <gap:plugin name="org.apache.cordova.network-information" source="pgb" version="0.2.12" />
         <gap:plugin name="org.apache.cordova.vibration" source="pgb" version="0.3.11" />
         <plugin name="net.roughshod.plugins.barcodescanner" spec="3.0.0" source="pgb" />
+        <plugin name="com.chariotsolutions.nfc.plugin" spec="0.5.1" source="pgb" />
 </widget>
